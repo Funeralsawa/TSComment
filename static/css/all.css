@@ -1,5 +1,29 @@
 #web_end {
-    background-color: blue;
     width: 100vw;
     height: 100vh;
+}
+
+.TSC_menu {
+    background-size: 100% 100%;
+    user-select: none;
+    width: 100vw;
+    height: 100vh;
+}
+
+.login {
+    background-size: 100% 100%;
+    user-select: none;
+    width: 100vw;
+    height: 100vh;
+}
+
+.login div {
+    height: 20vh;
+    width: 20vw;
+    position: relative;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    border-radius: 5px;
+    color: red;
 }
