@@ -42,7 +42,7 @@
 
 .Teacher_login_template {
     background-size: 100% 100%;
-    width: 20%;
+    width: 15%;
     height: 30%;
     top: 50%;
     left: 50%;
@@ -70,13 +70,21 @@
 }
 
 .Teacher_login_template > button {
-    float: right;
     width: 100%;
-    height: 20%;
+    height: 15%;
+    cursor: pointer;
     background-color: #00AEEC;
 }
 
 .Teacher_login_template > button:hover {
     background-color: springgreen;
     transition: 200ms;
+}
+
+div.Teacher_login_error_message {
+    display: block;
+    height: 15%;
+    width: 100%;
+    color: red;
+    font-size: 10%;
 }

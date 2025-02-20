@@ -5,6 +5,7 @@ class Settings {
         if(this.root.os) this.platform = "OTHER";
         this.username = "";
         this.photo = "";
+        this.is_teacher = false;
         this.$settings = $(`
             <div class="TSC_menu">
                 <div class="login">
@@ -26,6 +27,10 @@ class Settings {
         this.$Teacher_login = this.$settings.find(".Teacher_login");
         this.$Student_login = this.$settings.find(".Student_login");
         this.$Teacher_login_template = this.$settings.find('.Teacher_login_template');
+        this.$Teacher_login_account_input = this.$settings.find('.Teacher_login_account_input');
+        this.$Teacher_login_password_input = this.$settings.find('.Teacher_login_password_input');
+        this.$Teacher_login_template_button = this.$settings.find('.Teacher_login_template > button')
+        this.$Teacher_login_error_message = this.$settings.find('.Teacher_login_error_message');
         this.$Teacher_login_template.hide();
         this.root.$tsc.append(this.$settings);
         
@@ -40,14 +45,19 @@ class Settings {
     getinfo_web() {
         let outer = this;
         $.ajax({
-            url: "http://47.115.43.91:8000/settings/login/",
+            url: "http://47.115.43.91:8000/settings/getinfo/",
             type: "GET",
             data: {
-                username: this.username,
-                password: this.password,
+                platform: outer.platform,
             },
             success: function(resp) {
-                if(resp.result === "success") location.reload();
+                if(resp.result === "success") {
+                    outer.username = resp.username;
+                    outer.photo = resp.photo;
+                    outer.is_teacher = resp.is_teacher;
+                    outer.hide();
+                    //outer.root.menu.show();
+                }
                 else outer.$login.show();
             },
         });
@@ -68,7 +78,11 @@ class Settings {
         this.$Teacher_login.on('click', function() {
             outer.$login.hide();
             outer.login_on_remote("teacher");
-        })
+        });
+
+        this.$Teacher_login_template_button.on('click', function() {
+            outer.login("teacher");
+        });
     }
 
     login_on_remote(who) {
@@ -77,6 +91,29 @@ class Settings {
         } else {
 
         }
+    }
+
+    login(who) {
+        let outer = this;
+        let username = this.$Teacher_login_account_input.val();
+        let password = this.$Teacher_login_password_input.val();
+        $.ajax({
+            url: "http://47.115.43.91:8000/settings/login/",
+            type: "GET",
+            data: {
+                username: username,
+                password: password,
+            },
+            success: function(resp) {
+                if(resp.result === "success") {
+                    if(who === "teacher") outer.is_teacher = true;
+                    outer.hide();
+                    //outer.root.menu.show();
+                } else {
+                    outer.$Teacher_login_error_message.html(resp.result);
+                }
+            },
+        });
     }
 
     add_listening_events_register() {

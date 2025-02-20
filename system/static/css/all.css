@@ -82,6 +82,9 @@
 }
 
 div.Teacher_login_error_message {
+    display: block;
     height: 15%;
     width: 100%;
+    color: red;
+    font-size: 10%;
 }
