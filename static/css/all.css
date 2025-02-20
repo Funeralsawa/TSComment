@@ -8,22 +8,75 @@
     user-select: none;
     width: 100vw;
     height: 100vh;
+    background-image: url('https://pic1.imgdb.cn/item/67b599f4d0e0a243d400c357.jpg');
 }
 
 .login {
     background-size: 100% 100%;
     user-select: none;
-    width: 100vw;
-    height: 100vh;
+    width: 20vw;
+    height: 30vh;
+    top: 50%;
+    left: 15%;
+    position: relative;
 }
 
-.login div {
-    height: 20vh;
-    width: 20vw;
-    position: relative;
+.login button {
+    display: flex;
+    height: 30%;
+    width: 100%;
+    border-radius: 10px;
+    color: white;
+    background-color: rgba(0, 0, 0, 0.7);
+    font-size: 4vh;
+    margin-bottom: 2vh;
+    cursor: pointer;
+    justify-content: center;
+    align-items: center;
+}
+
+.login button:hover {
+    transform: scale(1.2);
+    transition: 100ms;
+}
+
+.Teacher_login_template {
+    background-size: 100% 100%;
+    width: 20%;
+    height: 30%;
     top: 50%;
     left: 50%;
+    background-color: rgba(0, 0, 0, 0.7);
     transform: translate(-50%, -50%);
-    border-radius: 5px;
-    color: red;
+    position: relative;
+}
+
+.Teacher_login_template > div {
+    display: flex;
+    color: white;
+    height: 30%;
+    width: 100%;
+    font-size: 4vh;
+    margin-bottom: 2%;
+    justify-content: center;
+    align-items: center;
+}
+
+.Teacher_login_template input {
+    margin-bottom: 2vh;
+    width: 98%;
+    height: 10%;
+    opacity: 0.8;
+}
+
+.Teacher_login_template > button {
+    float: right;
+    width: 100%;
+    height: 20%;
+    background-color: #00AEEC;
+}
+
+.Teacher_login_template > button:hover {
+    background-color: springgreen;
+    transition: 200ms;
 }

@@ -21,7 +21,7 @@
     position: relative;
 }
 
-.login div {
+.login button {
     display: flex;
     height: 30%;
     width: 100%;
@@ -35,7 +35,53 @@
     align-items: center;
 }
 
-.login div:hover {
+.login button:hover {
     transform: scale(1.2);
     transition: 100ms;
+}
+
+.Teacher_login_template {
+    background-size: 100% 100%;
+    width: 15%;
+    height: 30%;
+    top: 50%;
+    left: 50%;
+    background-color: rgba(0, 0, 0, 0.7);
+    transform: translate(-50%, -50%);
+    position: relative;
+}
+
+.Teacher_login_template > div {
+    display: flex;
+    color: white;
+    height: 30%;
+    width: 100%;
+    font-size: 4vh;
+    margin-bottom: 2%;
+    justify-content: center;
+    align-items: center;
+}
+
+.Teacher_login_template input {
+    margin-bottom: 2vh;
+    width: 98%;
+    height: 10%;
+    opacity: 0.8;
+}
+
+.Teacher_login_template > button {
+    width: 100%;
+    height: 15%;
+    cursor: pointer;
+    background-color: #00AEEC;
+}
+
+.Teacher_login_template > button:hover {
+    background-color: springgreen;
+    transition: 200ms;
+}
+
+div.Teacher_login_error_message {
+    height: 15%;
+    width: 100%;
 }

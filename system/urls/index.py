@@ -3,4 +3,5 @@ from system.views.index import index
 
 urlpatterns = [
     path("", index, name="index"),
+    path("settings/", include("system.urls.settings.index")),
 ]
