@@ -137,3 +137,23 @@ div.Student_login_error_message {
     color: red;
     font-size: 10%;
 }
+
+.Menu {
+    background-size: 100% 100%;
+    width: 100vw;
+    height: 100vh;
+    background-image: url("https://pic1.imgdb.cn/item/67b82373d0e0a243d40146c5.jpg");
+}
+
+.Menu-logout {
+    text-align: right;
+    color: white;
+    font-size: 100%;
+    cursor: pointer;
+    user-select: none;
+}
+
+.Menu-logout:hover {
+    color: aqua;
+    transition: 200ms;
+}

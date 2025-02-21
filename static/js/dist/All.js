@@ -3,7 +3,7 @@ class Menu {
         this.root = root;
         this.$menu = $(`
             <div class="Menu">
-                <button class="Menu-logout">退出</button>
+                <div class="Menu-logout">登出</div>
             </div>
         `);
         

@@ -142,10 +142,21 @@ div.Student_login_error_message {
     background-size: 100% 100%;
     width: 100vw;
     height: 100vh;
+    background-image: url("https://pic1.imgdb.cn/item/67b82373d0e0a243d40146c5.jpg");
 }
 
 .Menu-logout {
-    width: 100%;
-    height: 100%;
+    text-align: right;
+    width: 5%;
+    height: 5%;
+    color: white;
     font-size: 100%;
+    cursor: pointer;
+    user-select: none;
+    font-family: "PingFang SC", "Hiragino Sans GB", "Heiti SC", "Microsoft YaHei", "WenQuanYi Micro Hei";;
+}
+
+.Menu-logout:hover {
+    color: aqua;
+    transition: 200ms;
 }
