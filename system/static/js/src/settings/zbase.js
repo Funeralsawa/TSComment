@@ -5,7 +5,7 @@ class Settings {
         if(this.root.os) this.platform = "OTHER";
         this.username = "";
         this.photo = "";
-        this.is_teacher = false;
+        this.is_teacher = null;
         this.$settings = $(`
             <div class="TSC_menu">
                 <div class="login">
@@ -21,17 +21,36 @@ class Settings {
                     <button>登录</button>
                     <div class="Teacher_login_error_message"></div>
                 </div>
+                <div class="Student_login_template">
+                    <div>学生您好!</div>
+                    <span class="Student_login_item">
+                        <input class="Student_login_account_input" placeholder="请输入账号">
+                        <input class="Student_login_password_input" placeholder="请输入密码">
+                    </span>
+                    <button>登录</button>
+                    <div class="Student_login_error_message"></div>
+                </div>
             </div>
         `);
         this.$login = this.$settings.find('.login');
+
         this.$Teacher_login = this.$settings.find(".Teacher_login");
         this.$Student_login = this.$settings.find(".Student_login");
+
         this.$Teacher_login_template = this.$settings.find('.Teacher_login_template');
         this.$Teacher_login_account_input = this.$settings.find('.Teacher_login_account_input');
         this.$Teacher_login_password_input = this.$settings.find('.Teacher_login_password_input');
         this.$Teacher_login_template_button = this.$settings.find('.Teacher_login_template > button')
         this.$Teacher_login_error_message = this.$settings.find('.Teacher_login_error_message');
+
+        this.$Student_login_template = this.$settings.find('.Student_login_template');
+        this.$Student_login_account_input = this.$settings.find('.Student_login_account_input');
+        this.$Student_login_password_input = this.$settings.find('.Student_login_password_input');
+        this.$Student_login_error_message = this.$settings.find('.Student_login_error_message');
+        this.$Student_login_template_button = this.$settings.find('.Student_login_template > button')
+
         this.$Teacher_login_template.hide();
+        this.$Student_login_template.hide();
         this.root.$tsc.append(this.$settings);
         
         this.start();
@@ -55,8 +74,9 @@ class Settings {
                     outer.username = resp.username;
                     outer.photo = resp.photo;
                     outer.is_teacher = resp.is_teacher;
+                    console.log(outer.is_teacher);
                     outer.hide();
-                    //outer.root.menu.show();
+                    outer.root.menu.show();
                 }
                 else outer.$login.show();
             },
@@ -83,20 +103,31 @@ class Settings {
         this.$Teacher_login_template_button.on('click', function() {
             outer.login("teacher");
         });
+
+        this.$Student_login_template_button.on('click', function() {
+            outer.login("student");
+        });
     }
 
     login_on_remote(who) {
         if(who === "teacher") {
             this.$Teacher_login_template.show();
         } else {
-
+            this.$Student_login_template.show();
         }
     }
 
     login(who) {
         let outer = this;
-        let username = this.$Teacher_login_account_input.val();
-        let password = this.$Teacher_login_password_input.val();
+        let username, password;
+        if(who === "teacher") {
+            username = this.$Teacher_login_account_input.val();
+            password = this.$Teacher_login_password_input.val();
+        } else {
+            username = this.$Student_login_account_input.val();
+            password = this.$Student_login_password_input.val();
+        }
+        
         $.ajax({
             url: "http://47.115.43.91:8000/settings/login/",
             type: "GET",
@@ -106,11 +137,10 @@ class Settings {
             },
             success: function(resp) {
                 if(resp.result === "success") {
-                    if(who === "teacher") outer.is_teacher = true;
-                    outer.hide();
-                    //outer.root.menu.show();
+                    location.reload();
                 } else {
-                    outer.$Teacher_login_error_message.html(resp.result);
+                    if(who === "teacher") outer.$Teacher_login_error_message.html(resp.result);
+                    else outer.$Student_login_error_message.html(resp.result);
                 }
             },
         });

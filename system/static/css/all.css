@@ -88,3 +88,64 @@ div.Teacher_login_error_message {
     color: red;
     font-size: 10%;
 }
+
+.Student_login_template {
+    background-size: 100% 100%;
+    width: 15%;
+    height: 30%;
+    top: 50%;
+    left: 50%;
+    background-color: rgba(0, 0, 0, 0.7);
+    transform: translate(-50%, -50%);
+    position: relative;
+}
+
+.Student_login_template > div {
+    display: flex;
+    color: white;
+    height: 30%;
+    width: 100%;
+    font-size: 4vh;
+    margin-bottom: 2%;
+    justify-content: center;
+    align-items: center;
+}
+
+.Student_login_template input {
+    margin-bottom: 2vh;
+    width: 98%;
+    height: 10%;
+    opacity: 0.8;
+}
+
+.Student_login_template > button {
+    width: 100%;
+    height: 15%;
+    cursor: pointer;
+    background-color: #00AEEC;
+}
+
+.Student_login_template > button:hover {
+    background-color: springgreen;
+    transition: 200ms;
+}
+
+div.Student_login_error_message {
+    display: block;
+    height: 15%;
+    width: 100%;
+    color: red;
+    font-size: 10%;
+}
+
+.Menu {
+    background-size: 100% 100%;
+    width: 100vw;
+    height: 100vh;
+}
+
+.Menu-logout {
+    width: 100%;
+    height: 100%;
+    font-size: 100%;
+}
