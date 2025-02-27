@@ -9,6 +9,8 @@ def getinfo_web(request):
             'result': "未登录",
         })
     else:
+        if user.username == 'acs': is_teacher = "true"
+        else: is_teacher = "false"
         if Teacher.objects.filter(user=user):
             return JsonResponse({
                 'result': "success",
@@ -17,5 +19,5 @@ def getinfo_web(request):
         else:
             return JsonResponse({
                 'result': "success",
-                'is_teacher': "false",
+                'is_teacher': is_teacher,
             })

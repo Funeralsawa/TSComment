@@ -160,3 +160,56 @@ div.Student_login_error_message {
     color: aqua;
     transition: 200ms;
 }
+
+.Register_template {
+    background-size: 100% 100%;
+    width: 15%;
+    height: 30%;
+    top: 50%;
+    left: 50%;
+    color: white;
+    background-color: rgba(0, 0, 0, 0.7);
+    transform: translate(-50%, -50%);
+    position: relative;
+}
+
+.Register_template > h2 {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 0;
+}
+
+.Register_template input {
+    margin-top: 2vh;
+    width: 98%;
+    height: 10%;
+    opacity: 0.8;
+}
+
+.Register_template > select {
+    margin: 2vh 0 2vh 0;
+    width: 40%;
+    height: 8%;
+}
+
+.Register_template > button {
+    width: 50%;
+    height: 15%;
+    cursor: pointer;
+    float: right;
+    margin-top: 2vh;
+    background-color: #00AEEC;
+}
+
+.Register_template > button:hover {
+    background-color: springgreen;
+    transition: 200ms;
+}
+
+.Register_error_messages {
+    width: 100%;
+    height: 10%;
+    font-size: 10%;
+    color: red;
+}
