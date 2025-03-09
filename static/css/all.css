@@ -222,8 +222,8 @@ div.Student_login_error_message {
 
 .teacher_menu {
     position: relative;
-    height: 90%;
     width: 100%;
+    height: 90%;
     border-style: solid none solid none;
     border-width: 1px;
     border-color: black;
@@ -247,11 +247,10 @@ div.Student_login_error_message {
 
 .teacher_menu_questionnaire {
     position: absolute;
-    transform: translate(-50%, -50%);
-    left: 50%;
-    top: 5%;
+    top: 2%;
     width: 30%;
     height: 10%;
+    user-select: none;
 }
 
 .teacher_menu_input {
@@ -262,10 +261,11 @@ div.Student_login_error_message {
 
 .textArea {
     position: absolute;
-    height: 85%;
-    width: 98%;
+    /* height: 85%;
+    width: 98%; */
     border-style: solid;
     border-color: black;
     border-width: 1px;
+    text-overflow: scroll;
     top: 13%;
 }

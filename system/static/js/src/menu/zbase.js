@@ -1,6 +1,7 @@
 class Menu {
     constructor(root) {
         this.root = root;
+        this.num = 0;
         this.$menu = $(`
             <div class="Menu">
                 <nav>
@@ -11,7 +12,7 @@ class Menu {
                     <div class="teacher_menu_leftMenu"></div>
                     <div class="teacher_menu_rightMenu">
                         <div class="teacher_menu_questionnaire">
-                            <p>请输入你要生成的问卷形式:</p>
+                            <p>请输入你的学科:</p>
                             <input type="text" class="teacher_menu_input" placeholder="键入回车以提交噢！">
                         </div>
                         <div class="textArea"></div>
@@ -19,8 +20,7 @@ class Menu {
                 </section>
             </div>
         `);
-        
-        this.hide();
+
         this.$Menu_logout_button = this.$menu.find('.Menu-logout');
         this.$teacher_menu = this.$menu.find('.teacher_menu');
         this.$teacher_menu_input = this.$menu.find('.teacher_menu_input');
@@ -29,6 +29,8 @@ class Menu {
         this.root.$tsc.append(this.$menu);
         
         this.$teacher_menu.hide();
+        this.$textArea.hide();
+        this.hide();
         
         this.start();
     }
@@ -45,7 +47,14 @@ class Menu {
 
         this.$teacher_menu_input.on('keydown', function(e) {
             if(e.keyCode === 13) {
-                console.log("回车");
+                if(outer.num != 0) {
+                    console.log("请不要重复提交！");
+                    return false;
+                }
+                outer.num++;
+                console.log("生成ing");
+                outer.$textArea.html("<font color='red' size=4vh>你的问卷正在生成中，请不要重复提交！</font>");
+                outer.$textArea.show();
                 outer.send_question();
             }
         })
@@ -66,6 +75,9 @@ class Menu {
                 if(resp.result === "success")
                 {
                     outer.$textArea.html(resp.questionnaire);
+                    outer.$textArea.show();
+                    outer.num = 0;
+                    console.log("已完成！");
                 }
             },
         });
@@ -91,7 +103,8 @@ class Menu {
     show() {
         let outer = this;
         this.$menu.show();
-        if(this.root.settings.is_teacher) {
+        this.$teacher_menu.hide();
+        if(this.root.settings.is_teacher === "true") {
             this.$teacher_menu.show();
             setTimeout(() => {
                 outer.$teacher_menu_input.focus();

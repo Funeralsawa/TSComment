@@ -2,7 +2,7 @@ class Settings {
     constructor(root) {
         this.root = root;
         this.platform = "WEB";
-        if(this.root.os) this.platform = "OTHER";
+        if(this.root.os != "WEB") this.platform = "OTHER";
         this.username = "";
         this.photo = "";
         this.is_teacher = null;
