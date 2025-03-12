@@ -6,6 +6,7 @@ class Menu {
             <div class="Menu">
                 <nav>
                     <div class="Menu-logout">登出</div>
+                    <div type="button" class="btn save_button">保存为模板</div>
                 </nav>
                 <hr>
                 <section class="teacher_menu">
@@ -22,6 +23,7 @@ class Menu {
         `);
 
         this.$Menu_logout_button = this.$menu.find('.Menu-logout');
+        this.$save_button = this.$menu.find('.save_button');
         this.$teacher_menu = this.$menu.find('.teacher_menu');
         this.$teacher_menu_input = this.$menu.find('.teacher_menu_input');
         this.$textArea = this.$menu.find('.textArea');
@@ -30,6 +32,7 @@ class Menu {
         
         this.$teacher_menu.hide();
         this.$textArea.hide();
+        this.$save_button.hide();
         this.hide();
         
         this.start();
@@ -104,8 +107,10 @@ class Menu {
         let outer = this;
         this.$menu.show();
         this.$teacher_menu.hide();
+        this.$save_button.hide();
         if(this.root.settings.is_teacher === "true") {
             this.$teacher_menu.show();
+            this.$save_button.show();
             setTimeout(() => {
                 outer.$teacher_menu_input.focus();
             }, 50);
@@ -130,7 +135,7 @@ class Menu {
                     <div>老师您好!</div>
                     <span class="Teacher_login_item">
                         <input class="Teacher_login_account_input" placeholder="请输入账号">
-                        <input class="Teacher_login_password_input" placeholder="请输入密码">
+                        <input type="password" class="Teacher_login_password_input" placeholder="请输入密码">
                     </span>
                     <button>登录</button>
                     <div class="Teacher_login_error_message"></div>
@@ -139,7 +144,7 @@ class Menu {
                     <div>学生您好!</div>
                     <span class="Student_login_item">
                         <input class="Student_login_account_input" placeholder="请输入账号">
-                        <input class="Student_login_password_input" placeholder="请输入密码">
+                        <input type="password" class="Student_login_password_input" placeholder="请输入密码">
                     </span>
                     <button>登录</button>
                     <div class="Student_login_error_message"></div>

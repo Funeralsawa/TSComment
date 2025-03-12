@@ -17,7 +17,7 @@ class Settings {
                     <div>老师您好!</div>
                     <span class="Teacher_login_item">
                         <input class="Teacher_login_account_input" placeholder="请输入账号">
-                        <input class="Teacher_login_password_input" placeholder="请输入密码">
+                        <input type="password" class="Teacher_login_password_input" placeholder="请输入密码">
                     </span>
                     <button>登录</button>
                     <div class="Teacher_login_error_message"></div>
@@ -26,7 +26,7 @@ class Settings {
                     <div>学生您好!</div>
                     <span class="Student_login_item">
                         <input class="Student_login_account_input" placeholder="请输入账号">
-                        <input class="Student_login_password_input" placeholder="请输入密码">
+                        <input type="password" class="Student_login_password_input" placeholder="请输入密码">
                     </span>
                     <button>登录</button>
                     <div class="Student_login_error_message"></div>

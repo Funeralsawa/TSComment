@@ -6,6 +6,7 @@ class Menu {
             <div class="Menu">
                 <nav>
                     <div class="Menu-logout">登出</div>
+                    <div type="button" class="btn save_button">保存为模板</div>
                 </nav>
                 <hr>
                 <section class="teacher_menu">
@@ -22,6 +23,7 @@ class Menu {
         `);
 
         this.$Menu_logout_button = this.$menu.find('.Menu-logout');
+        this.$save_button = this.$menu.find('.save_button');
         this.$teacher_menu = this.$menu.find('.teacher_menu');
         this.$teacher_menu_input = this.$menu.find('.teacher_menu_input');
         this.$textArea = this.$menu.find('.textArea');
@@ -30,6 +32,7 @@ class Menu {
         
         this.$teacher_menu.hide();
         this.$textArea.hide();
+        this.$save_button.hide();
         this.hide();
         
         this.start();
@@ -104,8 +107,10 @@ class Menu {
         let outer = this;
         this.$menu.show();
         this.$teacher_menu.hide();
+        this.$save_button.hide();
         if(this.root.settings.is_teacher === "true") {
             this.$teacher_menu.show();
+            this.$save_button.show();
             setTimeout(() => {
                 outer.$teacher_menu_input.focus();
             }, 50);

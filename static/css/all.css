@@ -142,6 +142,7 @@ div.Student_login_error_message {
     background-size: 100% 100%;
     width: 100vw;
     height: 100vh;
+    overflow: scroll;
     /* background-image: url("https://pic1.imgdb.cn/item/67b82373d0e0a243d40146c5.jpg"); */
 }
 
@@ -153,7 +154,8 @@ div.Student_login_error_message {
     font-size: 100%;
     cursor: pointer;
     user-select: none;
-    font-family: "PingFang SC", "Hiragino Sans GB", "Heiti SC", "Microsoft YaHei", "WenQuanYi Micro Hei";;
+    font-family: "PingFang SC", "Hiragino Sans GB", "Heiti SC", "Microsoft YaHei", "WenQuanYi Micro Hei";
+    display: inline-block;
 }
 
 .Menu-logout:hover {
@@ -243,6 +245,9 @@ div.Student_login_error_message {
     float: right;
     width: 78%;
     height: 100%;
+    overflow: scroll;
+    max-width: 78%;
+    max-height: 100%;
 }
 
 .teacher_menu_questionnaire {
@@ -251,6 +256,7 @@ div.Student_login_error_message {
     width: 30%;
     height: 10%;
     user-select: none;
+    display: inline;
 }
 
 .teacher_menu_input {
@@ -266,6 +272,16 @@ div.Student_login_error_message {
     border-style: solid;
     border-color: black;
     border-width: 1px;
-    text-overflow: scroll;
     top: 13%;
+}
+
+.save_button {
+    margin: 0 10px;  
+    display: inline-block;
+    font-size: 100%;
+}
+
+.save_button:hover {
+    color: aqua;
+    transition: 200ms;
 }

@@ -1,0 +1,13 @@
+from django.db import models
+from system.models.teacher.teacher import Teacher
+from django.utils import timezone
+from datetime import datetime
+
+class Questionnaire(models.Model):
+    name = models.CharField(max_length=50, verbose_name='name', null=False, blank=False, default=datetime.now(), primary_key=True)
+    create_Time = models.DateTimeField(verbose_name='create time', auto_now_add=True)
+    text = models.TextField(verbose_name="text")
+    owner = models.ForeignKey(Teacher, on_delete=models.CASCADE, related_name="Questionnaire_owner")
+
+    def __str__(self):
+        return str(self.name)
