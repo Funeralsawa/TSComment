@@ -83,10 +83,11 @@
 
 div.Teacher_login_error_message {
     display: block;
+    text-align: left;
     height: 15%;
     width: 100%;
     color: red;
-    font-size: 10%;
+    font-size: 2vh;
 }
 
 .Student_login_template {
@@ -135,7 +136,7 @@ div.Student_login_error_message {
     height: 15%;
     width: 100%;
     color: red;
-    font-size: 10%;
+    font-size: 2vh;
 }
 
 .Menu {
@@ -211,9 +212,10 @@ div.Student_login_error_message {
 }
 
 .Register_error_messages {
+    display: block;
     width: 100%;
     height: 10%;
-    font-size: 10%;
+    font-size: 1.5vh;
     color: red;
 }
 

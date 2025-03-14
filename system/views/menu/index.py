@@ -3,6 +3,8 @@ from django.contrib.auth import logout as LogOut
 from system.models.teacher.teacher import Teacher
 from system.models.questionnaire.questionnaire import Questionnaire
 from openai import OpenAI
+import math
+import random
 
 def logout(request):
     LogOut(request)
@@ -36,12 +38,36 @@ def send_question(request):
             r = i
             break
     questionnaire = questionnaire[l:r]
-    user = request.user
-    if Teacher.objects.filter(user=user):
-        teacher = Teacher.objects.filter(user=user)[0]
-        Questionnaire.objects.create(text=questionnaire, owner=teacher)
+    #user = request.user
+    #if Teacher.objects.filter(user=user):
+    #    teacher = Teacher.objects.filter(user=user)[0]
+    #    Questionnaire.objects.create(text=questionnaire, owner=teacher)
     print(questionnaire)
     return JsonResponse({
         'result': "success",
         'questionnaire': questionnaire,
     })
+
+def getRandomNum():
+    num = ''
+    for i in range(20):
+        num = num + str(math.floor(random.random() * 9))
+    return num
+
+
+def save_text(request):
+    user, data = request.user, request.POST
+    flag = False
+    if Teacher.objects.filter(user=user):
+        teacher = Teacher.objects.filter(user=user)[0]
+        Questionnaire.objects.create(text=data['text'], owner=teacher, name=getRandomNum())
+        flag = True
+    if flag:
+        print("save success")
+        return JsonResponse({
+            'result': "success",
+        })
+    else:
+        return JsonResponse({
+            'result': "fail",
+        })

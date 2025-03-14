@@ -29,12 +29,12 @@ class Menu {
         this.$textArea = this.$menu.find('.textArea');
 
         this.root.$tsc.append(this.$menu);
-        
+
         this.$teacher_menu.hide();
         this.$textArea.hide();
         this.$save_button.hide();
         this.hide();
-        
+
         this.start();
     }
 
@@ -44,29 +44,65 @@ class Menu {
 
     add_event_listenings() {
         let outer = this;
-        this.$Menu_logout_button.on('click', function() {
+        this.$Menu_logout_button.on('click', function () {
             outer.logout(outer.root.os);
         });
 
-        this.$teacher_menu_input.on('keydown', function(e) {
-            if(e.keyCode === 13) {
-                if(outer.num != 0) {
+        this.$teacher_menu_input.on('keydown', function (e) {
+            if (e.keyCode === 13) {
+                if (outer.num != 0) {
                     console.log("请不要重复提交！");
                     return false;
                 }
                 outer.num++;
                 console.log("生成ing");
-                outer.$textArea.html("<font color='red' size=4vh>你的问卷正在生成中，请不要重复提交！</font>");
+                outer.$textArea.html("<font color='red' size='4vh'>你的问卷正在生成中，请不要重复提交！</font>");
+                if (outer.textArea_none) clearTimeout(outer.textArea_none);
                 outer.$textArea.show();
                 outer.send_question();
             }
-        })
+        });
+
+        this.$save_button.on('click', function () {
+            if(outer.$textArea.html() === "<font color=\"red\" size=\"4vh\">你的问卷正在生成中，请不要重复提交！</font>") {
+                return false;
+            }
+            if (!outer.questionnaire) {
+                if (outer.textArea_none) clearTimeout(outer.textArea_none);
+                outer.$textArea.html("你还没有生成问卷噢！");
+                outer.$textArea.show();
+                outer.textArea_none = setTimeout(function () {
+                    outer.$textArea.html("");
+                    outer.$textArea.fadeOut();
+                }, 3000);
+                return false;
+            }
+            $.ajax({
+                url: "http://47.115.43.91:8000/menu/save_text/",
+                type: "POST",
+                data: {
+                    text: outer.questionnaire,
+                    csrfmiddlewaretoken: $("[name='csrfmiddlewaretoken']").val(),
+                },
+                success: function (resp) {
+                    if (resp.result === "success") {
+                        console.log("save success");
+                        outer.questionnaire = null;
+                        outer.$textArea.html("问卷已保存！");
+                    }
+                    else {
+                        console.log("save failed");
+                        outer.$textArea.html("问卷保存失败");
+                    }
+                }
+            });
+        });
     }
 
     send_question() {
         let outer = this;
         let question = this.$teacher_menu_input.val();
-        if(question === null) return false;
+        if (question === null) return false;
         $.ajax({
             url: "http://47.115.43.91:8000/menu/send_question/",
             type: "POST",
@@ -74,9 +110,9 @@ class Menu {
                 question: question,
                 csrfmiddlewaretoken: $("[name='csrfmiddlewaretoken']").val(),
             },
-            success: function(resp) {
-                if(resp.result === "success")
-                {
+            success: function (resp) {
+                if (resp.result === "success") {
+                    outer.questionnaire = resp.questionnaire;
                     outer.$textArea.html(resp.questionnaire);
                     outer.$textArea.show();
                     outer.num = 0;
@@ -87,12 +123,12 @@ class Menu {
     }
 
     logout(os) {
-        if(os === "WEB") {
+        if (os === "WEB") {
             $.ajax({
                 url: "http://47.115.43.91:8000/menu/logout/",
                 type: "GET",
-                success: function(resp) {
-                    if(resp.result === "success") location.reload();
+                success: function (resp) {
+                    if (resp.result === "success") location.reload();
                     else console.log("登出失败");
                 },
             });
@@ -108,7 +144,7 @@ class Menu {
         this.$menu.show();
         this.$teacher_menu.hide();
         this.$save_button.hide();
-        if(this.root.settings.is_teacher === "true") {
+        if (this.root.settings.is_teacher === "true") {
             this.$teacher_menu.show();
             this.$save_button.show();
             setTimeout(() => {
@@ -116,7 +152,8 @@ class Menu {
             }, 50);
         }
     }
-}class Settings {
+}
+class Settings {
     constructor(root) {
         this.root = root;
         this.platform = "WEB";
