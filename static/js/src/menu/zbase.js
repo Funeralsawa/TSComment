@@ -27,6 +27,7 @@ class Menu {
         this.$teacher_menu = this.$menu.find('.teacher_menu');
         this.$teacher_menu_input = this.$menu.find('.teacher_menu_input');
         this.$textArea = this.$menu.find('.textArea');
+        this.$teacher_menu_leftMenu = this.$menu.find('.teacher_menu_leftMenu');
 
         this.root.$tsc.append(this.$menu);
 
@@ -89,6 +90,9 @@ class Menu {
                         console.log("save success");
                         outer.questionnaire = null;
                         outer.$textArea.html("问卷已保存！");
+                        setTimeout(() => {
+                            location.reload();
+                        }, 3000);
                     }
                     else {
                         console.log("save failed");

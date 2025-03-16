@@ -240,6 +240,7 @@ div.Student_login_error_message {
     border-style: none solid none none;
     border-color: black;
     border-width: 1px;
+    user-select: none;
 }
 
 .teacher_menu_rightMenu {
@@ -286,4 +287,9 @@ div.Student_login_error_message {
 .save_button:hover {
     color: aqua;
     transition: 200ms;
+}
+
+.teacher_menu_leftMenu li:hover {
+    color: aqua;
+    cursor: pointer;
 }

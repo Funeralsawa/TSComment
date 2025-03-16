@@ -27,6 +27,7 @@ class Menu {
         this.$teacher_menu = this.$menu.find('.teacher_menu');
         this.$teacher_menu_input = this.$menu.find('.teacher_menu_input');
         this.$textArea = this.$menu.find('.textArea');
+        this.$teacher_menu_leftMenu = this.$menu.find('.teacher_menu_leftMenu');
 
         this.root.$tsc.append(this.$menu);
 
@@ -89,6 +90,9 @@ class Menu {
                         console.log("save success");
                         outer.questionnaire = null;
                         outer.$textArea.html("问卷已保存！");
+                        setTimeout(() => {
+                            location.reload();
+                        }, 3000);
                     }
                     else {
                         console.log("save failed");
@@ -257,6 +261,16 @@ class Settings {
                     console.log(outer.is_teacher);
                     outer.hide();
                     outer.root.menu.show();
+                    if(resp.is_teacher === "true" && resp.questionnaire) {
+                        let $left_menu = outer.root.menu.$teacher_menu_leftMenu;
+                        let $ul = $("<ul></ul>");
+                        for(let i of resp.questionnaire) {
+                            let $li = $("<li></li>").text(i.name);
+                            $ul.append($li);
+                        }
+                        $left_menu.html($ul);
+                        outer.setMenuEventListening();
+                    }
                 }
                 else outer.$login.show();
             },
@@ -287,6 +301,27 @@ class Settings {
         this.$Student_login_template_button.on('click', function() {
             outer.login("student");
         });
+    }
+
+    setMenuEventListening() {
+        let outer = this;
+        let $li = this.root.menu.$teacher_menu_leftMenu.find("li");
+        $li.on('click', function(e) {
+            e.stopPropagation(); //阻止事件冒泡
+            $.ajax({
+                url: "http://47.115.43.91:8000/settings/setMenuEventListening/",
+                type: "GET",
+                data: {
+                    name: $(this).text(), //当前触发事件的元素是$(this)
+                },
+                success: function(resp) {
+                    if(resp.result === "success") {
+                        outer.root.menu.$textArea.html(resp.text);
+                        outer.root.menu.$textArea.show();
+                    }
+                },
+            });
+        })
     }
 
     login_on_remote(who) {
