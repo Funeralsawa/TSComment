@@ -60,7 +60,7 @@ def save_text(request):
     flag = False
     if Teacher.objects.filter(user=user):
         teacher = Teacher.objects.filter(user=user)[0]
-        Questionnaire.objects.create(text=data['text'], owner=teacher, name=getRandomNum())
+        Questionnaire.objects.create(text=data['text'], owner=teacher, name=data['questionnaireName'])
         flag = True
     if flag:
         print("save success")

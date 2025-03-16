@@ -1,5 +1,6 @@
 class Menu {
     constructor(root) {
+        let outer = this;
         this.root = root;
         this.num = 0;
         this.$menu = $(`
@@ -8,7 +9,7 @@ class Menu {
                     <div class="Menu-logout">登出</div>
                     <div type="button" class="btn save_button">保存为模板</div>
                 </nav>
-                <hr>
+                <hr>             
                 <section class="teacher_menu">
                     <div class="teacher_menu_leftMenu"></div>
                     <div class="teacher_menu_rightMenu">
@@ -19,6 +20,23 @@ class Menu {
                         <div class="textArea"></div>
                     </div>
                 </section>
+                <div class="modal" tabindex="-1">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title">起名谢谢</h5>
+                                <button type="button" class="btn-close close_questionnaire_name" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <input type="text" placeholder="输入你的问卷名称" value="${outer.getDate()}" class="questionnaireName">
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary close_questionnaire_name" data-bs-dismiss="modal">关闭</button>
+                                <button type="button" class="btn btn-primary save_questionnaire_name">保存</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         `);
 
@@ -28,12 +46,17 @@ class Menu {
         this.$teacher_menu_input = this.$menu.find('.teacher_menu_input');
         this.$textArea = this.$menu.find('.textArea');
         this.$teacher_menu_leftMenu = this.$menu.find('.teacher_menu_leftMenu');
+        this.$modal = this.$menu.find('.modal');
+        this.$questionnaireName = this.$menu.find('.questionnaireName');
+        this.$save_questionnaire_name = this.$menu.find('.save_questionnaire_name');
+        this.$close_questionnaire_name = this.$menu.find('.close_questionnaire_name');
 
         this.root.$tsc.append(this.$menu);
 
         this.$teacher_menu.hide();
         this.$textArea.hide();
         this.$save_button.hide();
+        
         this.hide();
 
         this.start();
@@ -41,10 +64,32 @@ class Menu {
 
     start() {
         this.add_event_listenings();
+        this.$modal.hide();
+    }
+
+    getDate() {
+        const now = new Date();
+        let year = now.getFullYear();
+        let month = String(now.getMonth() + 1).padStart(2, '0');
+        let day = String(now.getDate()).padStart(2, '0');
+        let hour = String(now.getHours()).padStart(2, '0');
+        let min = String(now.getMinutes()).padStart(2, '0');
+        let second = String(now.getSeconds()).padStart(2, '0');
+        let millsecond = String(now.getMilliseconds()).padStart(2, '0');
+        return `${year}-${month}-${day} ${hour}:${min}:${second}:${millsecond}`;
     }
 
     add_event_listenings() {
         let outer = this;
+
+        //模态框需要初始化
+        document.addEventListener('DOMContentLoaded', function() {
+            var modal = new bootstrap.Modal(document.querySelector('.modal'), {
+                keyboard: true,
+                backdrop: true
+            });
+        });
+
         this.$Menu_logout_button.on('click', function () {
             outer.logout(outer.root.os);
         });
@@ -78,10 +123,20 @@ class Menu {
                 }, 3000);
                 return false;
             }
+            outer.$modal.show();
+        });
+
+        this.$close_questionnaire_name.on('click', function() {
+            outer.$modal.hide();
+        });
+
+        this.$save_questionnaire_name.on('click', function() {
+            let questionnaireName = outer.$questionnaireName.val();
             $.ajax({
                 url: "http://47.115.43.91:8000/menu/save_text/",
                 type: "POST",
                 data: {
+                    questionnaireName: questionnaireName,
                     text: outer.questionnaire,
                     csrfmiddlewaretoken: $("[name='csrfmiddlewaretoken']").val(),
                 },
