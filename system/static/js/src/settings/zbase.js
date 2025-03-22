@@ -89,7 +89,7 @@ class Settings {
     getinfo_web() {
         let outer = this;
         $.ajax({
-            url: "http://47.115.43.91:8000/settings/getinfo/",
+            url: "https://app7431.acapp.acwing.com.cn/settings/getinfo/",
             type: "GET",
             data: {
                 platform: outer.platform,
@@ -150,7 +150,7 @@ class Settings {
         $li.on('click', function(e) {
             e.stopPropagation(); //阻止事件冒泡
             $.ajax({
-                url: "http://47.115.43.91:8000/settings/setMenuEventListening/",
+                url: "https://app7431.acapp.acwing.com.cn/settings/setMenuEventListening/",
                 type: "GET",
                 data: {
                     name: $(this).text(), //当前触发事件的元素是$(this)
@@ -185,7 +185,7 @@ class Settings {
         }
         
         $.ajax({
-            url: "http://47.115.43.91:8000/settings/login/",
+            url: "https://app7431.acapp.acwing.com.cn/settings/login/",
             type: "GET",
             data: {
                 username: username,
@@ -223,7 +223,7 @@ class Settings {
         let select = this.$select.val();
 
         $.ajax({
-            url: "http://47.115.43.91:8000/settings/register/",
+            url: "https://app7431.acapp.acwing.com.cn/settings/register/",
             type: "GET",
             data: {
                 username: username,

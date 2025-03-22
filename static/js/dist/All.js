@@ -133,7 +133,7 @@ class Menu {
         this.$save_questionnaire_name.on('click', function() {
             let questionnaireName = outer.$questionnaireName.val();
             $.ajax({
-                url: "http://47.115.43.91:8000/menu/save_text/",
+                url: "https://app7431.acapp.acwing.com.cn/menu/save_text/",
                 type: "POST",
                 data: {
                     questionnaireName: questionnaireName,
@@ -163,7 +163,7 @@ class Menu {
         let question = this.$teacher_menu_input.val();
         if (question === null) return false;
         $.ajax({
-            url: "http://47.115.43.91:8000/menu/send_question/",
+            url: "https://app7431.acapp.acwing.com.cn/menu/send_question/",
             type: "POST",
             data: {
                 question: question,
@@ -184,7 +184,7 @@ class Menu {
     logout(os) {
         if (os === "WEB") {
             $.ajax({
-                url: "http://47.115.43.91:8000/menu/logout/",
+                url: "https://app7431.acapp.acwing.com.cn/menu/logout/",
                 type: "GET",
                 success: function (resp) {
                     if (resp.result === "success") location.reload();
@@ -303,7 +303,7 @@ class Settings {
     getinfo_web() {
         let outer = this;
         $.ajax({
-            url: "http://47.115.43.91:8000/settings/getinfo/",
+            url: "https://app7431.acapp.acwing.com.cn/settings/getinfo/",
             type: "GET",
             data: {
                 platform: outer.platform,
@@ -364,7 +364,7 @@ class Settings {
         $li.on('click', function(e) {
             e.stopPropagation(); //阻止事件冒泡
             $.ajax({
-                url: "http://47.115.43.91:8000/settings/setMenuEventListening/",
+                url: "https://app7431.acapp.acwing.com.cn/settings/setMenuEventListening/",
                 type: "GET",
                 data: {
                     name: $(this).text(), //当前触发事件的元素是$(this)
@@ -399,7 +399,7 @@ class Settings {
         }
         
         $.ajax({
-            url: "http://47.115.43.91:8000/settings/login/",
+            url: "https://app7431.acapp.acwing.com.cn/settings/login/",
             type: "GET",
             data: {
                 username: username,
@@ -437,7 +437,7 @@ class Settings {
         let select = this.$select.val();
 
         $.ajax({
-            url: "http://47.115.43.91:8000/settings/register/",
+            url: "https://app7431.acapp.acwing.com.cn/settings/register/",
             type: "GET",
             data: {
                 username: username,
@@ -467,7 +467,8 @@ class Settings {
     show() {
         this.$settings.show();
     }
-}export class TSC {
+}
+export class TSC {
     constructor(id, os) {
         this.id = id;
         this.os = "WEB";
