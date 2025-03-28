@@ -8,30 +8,29 @@ def signin(request):
     data = request.GET
     username = data.get('username')
     password = data.get('password')
-    who = data.get('who')
 
     if username == 'acs':
         user = authenticate(username=username, password=password)
-        if user: 
+        if user:
             login(request, user)
             return JsonResponse({
                 'result': 'success',
+                'is_teacher': int(1),
             })
 
-    user = User.objects.filter(username=username, password=password)
+    user = authenticate(username=username, password=password)
     if user:
-        user = user[0]
-        if who == 'teacher':
-            user = Teacher.objects.filter(user=user)
+        if Teacher.objects.filter(user=user):
+            is_teacher = 1
         else:
-            user = Student.objects.filter(user=user)
+            is_teacher = 0
     if not user:
         return JsonResponse({
             'result': "用户名或密码不正确",
         })
-    user = User.objects.filter(username=username, password=password)
-    login(request, user[0])
+    login(request, user)
     request.session.set_expiry(0)
     return JsonResponse({
         'result': 'success',
+        'is_teacher': is_teacher,
     })

@@ -1,15 +1,24 @@
 from system.models.questionnaire.questionnaire import Questionnaire
 from system.models.teacher.teacher import Teacher
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from rest_framework.permissions import IsAuthenticated
 from django.http import JsonResponse
 
-def SetMenuEventListening(request):
-    data = request.GET
-    name = data['name']
-    user = request.user
-    teacher = Teacher.objects.filter(user=user)[0]
-    text = Questionnaire.objects.filter(owner=teacher, name=name)
-    text = list(text.values())[0].get('text')
-    return JsonResponse({
-        'result': "success",
-        'text': text,
-    })
+class SetMenuEventListening(APIView):
+    permission_classes = [IsAuthenticated]
+    def get(self, request):
+        data = request.GET
+        name = data['name']
+        user = request.user
+        teacher = Teacher.objects.filter(user=user)[0]
+        text = Questionnaire.objects.filter(owner=teacher, name=name)
+        if not text:
+            return Response({
+                'result': "未找到该问卷",
+            })
+        text = list(text.values())[0].get('text')
+        return Response({
+            'result': "success",
+            'text': text,
+        })

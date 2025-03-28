@@ -5,7 +5,9 @@ class Settings {
         if(this.root.os != "WEB") this.platform = "OTHER";
         this.username = "";
         this.photo = "";
-        this.is_teacher = null;
+        this.access = "";
+        this.refresh = "";
+        this.is_teacher = 0;
         this.$settings = $(`
             <div class="TSC_menu">
                 <div class="login">
@@ -86,6 +88,24 @@ class Settings {
         this.getinfo_web();
     }
 
+    refresh_token()
+    {
+        $.ajax({
+            url: "https://app7431.acapp.acwing.com.cn/settings/api/token/refresh/",
+            type: "POST",
+            data: {
+                "refresh": localStorage.getItem("refresh"),
+                csrfmiddlewaretoken: $("[name='csrfmiddlewaretoken']").val(),
+            },
+            success: resp => {
+                localStorage.setItem("access", resp.access);
+            },
+            error: () => {
+                console.log("refresh token过期！");
+            }
+        });
+    }
+
     getinfo_web() {
         let outer = this;
         $.ajax({
@@ -93,6 +113,9 @@ class Settings {
             type: "GET",
             data: {
                 platform: outer.platform,
+            },
+            headers: {
+                'Authorization': "Bearer " + localStorage.getItem("access"),
             },
             success: function(resp) {
                 if(resp.result === "success") {
@@ -102,7 +125,7 @@ class Settings {
                     console.log(outer.is_teacher);
                     outer.hide();
                     outer.root.menu.show();
-                    if(resp.is_teacher === "true" && resp.questionnaire) {
+                    if(resp.is_teacher === 1 && resp.questionnaire) {
                         let $left_menu = outer.root.menu.$teacher_menu_leftMenu;
                         let $ul = $("<ul></ul>");
                         for(let i of resp.questionnaire) {
@@ -112,6 +135,9 @@ class Settings {
                         $left_menu.html($ul);
                         outer.setMenuEventListening();
                     }
+                    outer.ref = setInterval(() => {
+                        outer.refresh_token();
+                    }, 60000);
                 }
                 else outer.$login.show();
             },
@@ -155,6 +181,9 @@ class Settings {
                 data: {
                     name: $(this).text(), //当前触发事件的元素是$(this)
                 },
+                headers: {
+                    'Authorization': "Bearer " + localStorage.getItem("access"),
+                },
                 success: function(resp) {
                     if(resp.result === "success") {
                         outer.root.menu.$textArea.html(resp.text);
@@ -185,20 +214,23 @@ class Settings {
         }
         
         $.ajax({
-            url: "https://app7431.acapp.acwing.com.cn/settings/login/",
-            type: "GET",
+            url: "https://app7431.acapp.acwing.com.cn/settings/api/token/",
+            type: "post",
             data: {
                 username: username,
                 password: password,
-                who: who,
+                csrfmiddlewaretoken: $("[name='csrfmiddlewaretoken']").val(),
             },
             success: function(resp) {
-                if(resp.result === "success") {
-                    location.reload();
-                } else {
-                    if(who === "teacher") outer.$Teacher_login_error_message.html(resp.result);
-                    else outer.$Student_login_error_message.html(resp.result);
-                }
+                outer.access = resp.access;
+                outer.refresh = resp.refresh;
+                localStorage.setItem("access", resp.access);
+                localStorage.setItem("refresh", resp.refresh);
+                location.reload();
+            },
+            error: () => {
+                if(who === "teacher") outer.$Teacher_login_error_message.html("账号名或密码错误");
+                else outer.$Student_login_error_message.html("账号名或密码错误");
             },
         });
     }
@@ -224,12 +256,13 @@ class Settings {
 
         $.ajax({
             url: "https://app7431.acapp.acwing.com.cn/settings/register/",
-            type: "GET",
+            type: "POST",
             data: {
                 username: username,
                 password: password,
                 IdentifyPassword: IdentifyPassword,
                 select: select,
+                csrfmiddlewaretoken: $("[name='csrfmiddlewaretoken']").val(),
             },
             success: function(resp) {
                 if(resp.result === "success") {

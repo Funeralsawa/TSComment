@@ -140,6 +140,9 @@ class Menu {
                     text: outer.questionnaire,
                     csrfmiddlewaretoken: $("[name='csrfmiddlewaretoken']").val(),
                 },
+                headers: {
+                    'Authorization': "Bearer " + localStorage.getItem("access"),
+                },
                 success: function (resp) {
                     if (resp.result === "success") {
                         console.log("save success");
@@ -162,12 +165,15 @@ class Menu {
         let outer = this;
         let question = this.$teacher_menu_input.val();
         if (question === null) return false;
+        console.log(this.getDate());
         $.ajax({
             url: "https://app7431.acapp.acwing.com.cn/menu/send_question/",
             type: "POST",
             data: {
                 question: question,
-                csrfmiddlewaretoken: $("[name='csrfmiddlewaretoken']").val(),
+            },
+            headers: {
+                'Authorization': "Bearer " + localStorage.getItem("access"),
             },
             success: function (resp) {
                 if (resp.result === "success") {
@@ -177,7 +183,12 @@ class Menu {
                     outer.num = 0;
                     console.log("已完成！");
                 }
+                else outer.$textArea.html(resp.result);
             },
+            error: () => {
+                outer.$textArea.html("请求超时请重新发送");
+                console.log(this.getDate())
+            }
         });
     }
 
@@ -203,7 +214,7 @@ class Menu {
         this.$menu.show();
         this.$teacher_menu.hide();
         this.$save_button.hide();
-        if (this.root.settings.is_teacher === "true") {
+        if (this.root.settings.is_teacher === 1) {
             this.$teacher_menu.show();
             this.$save_button.show();
             setTimeout(() => {

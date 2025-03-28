@@ -2,26 +2,26 @@ from django.http import JsonResponse
 from system.models.student.student import Student
 from system.models.teacher.teacher import Teacher
 from system.models.questionnaire.questionnaire import Questionnaire
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from rest_framework.permissions import IsAuthenticated
 
-def getinfo_web(request):
-    user = request.user
-    if not user.is_authenticated:
-        return JsonResponse({
-            'result': "未登录",
-        })
-    else:
-        if user.username == 'acs': is_teacher = "true"
-        else: is_teacher = "false"
+class getinfo(APIView):
+    permission_classes = ([IsAuthenticated])
+
+    def get(self, request):
+        user = request.user
         if Teacher.objects.filter(user=user):
             teacher = Teacher.objects.filter(user=user)[0]
             questionnaire = Questionnaire.objects.filter(owner=teacher)
-            return JsonResponse({
+            return Response({
                 'result': "success",
-                'is_teacher': "true",
+                'is_teacher': 1,
                 'questionnaire': list(questionnaire.values('name')),
             })
         else:
-            return JsonResponse({
+            return Response({
                 'result': "success",
-                'is_teacher': is_teacher,
+                'is_teacher': 0,
             })
+
