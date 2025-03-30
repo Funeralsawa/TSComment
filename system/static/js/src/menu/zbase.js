@@ -17,7 +17,7 @@ class Menu {
                             <p>请输入你的学科:</p>
                             <input type="text" class="teacher_menu_input" placeholder="键入回车以提交噢！">
                         </div>
-                        <div class="textArea"></div>
+                        <pre class="textArea"></pre>
                     </div>
                 </section>
                 <div class="modal" tabindex="-1">
@@ -137,8 +137,7 @@ class Menu {
                 type: "POST",
                 data: {
                     questionnaireName: questionnaireName,
-                    text: outer.questionnaire,
-                    csrfmiddlewaretoken: $("[name='csrfmiddlewaretoken']").val(),
+                    content: outer.questionnaire,
                 },
                 headers: {
                     'Authorization': "Bearer " + localStorage.getItem("access"),
@@ -178,8 +177,8 @@ class Menu {
             success: function (resp) {
                 if (resp.result === "success") {
                     outer.questionnaire = resp.questionnaire;
-                    outer.$textArea.html(resp.questionnaire);
-                    outer.$textArea.show();
+                    outer.$textArea.html(JSON.stringify(JSON.parse(resp.questionnaire), null, 4)); 
+                        outer.$textArea.show();
                     outer.num = 0;
                     console.log("已完成！");
                 }
@@ -194,14 +193,8 @@ class Menu {
 
     logout(os) {
         if (os === "WEB") {
-            $.ajax({
-                url: "https://app7431.acapp.acwing.com.cn/menu/logout/",
-                type: "GET",
-                success: function (resp) {
-                    if (resp.result === "success") location.reload();
-                    else console.log("登出失败");
-                },
-            });
+            localStorage.removeItem("access");
+            location.reload();
         }
     }
 

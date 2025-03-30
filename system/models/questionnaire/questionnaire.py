@@ -6,9 +6,9 @@ import uuid
 
 class Questionnaire(models.Model):
     name = models.CharField(max_length=50, verbose_name='name', null=False, blank=False, 
-                            default=timezone.now().strftime("%Y:%m:%D-%H:%M:%S"), primary_key=True)
+                            default=timezone.now().strftime("%Y:%m:%D-%H:%M:%S"))
     create_Time = models.DateTimeField(verbose_name='create_time', auto_now_add=True)
-    text = models.TextField(verbose_name="text")
+    content = models.JSONField()
     owner = models.ForeignKey(Teacher, on_delete=models.CASCADE, related_name="Questionnaire_owner")
 
     def __str__(self):

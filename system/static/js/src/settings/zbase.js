@@ -186,7 +186,8 @@ class Settings {
                 },
                 success: function(resp) {
                     if(resp.result === "success") {
-                        outer.root.menu.$textArea.html(resp.text);
+                        console.log(resp.text);
+                        outer.root.menu.$textArea.html(resp.content);
                         outer.root.menu.$textArea.show();
                     }
                 },

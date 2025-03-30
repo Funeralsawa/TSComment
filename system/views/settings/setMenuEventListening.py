@@ -11,14 +11,19 @@ class SetMenuEventListening(APIView):
         data = request.GET
         name = data['name']
         user = request.user
-        teacher = Teacher.objects.filter(user=user)[0]
-        text = Questionnaire.objects.filter(owner=teacher, name=name)
-        if not text:
+        if Teacher.objects.filter(user=user):
+            teacher = Teacher.objects.filter(user=user)[0]
+            text = Questionnaire.objects.filter(owner=teacher, name=name)
+            if not text:
+                return Response({
+                    'result': "未找到该问卷",
+                })
+            text = list(text.values())[0].get('content')
             return Response({
-                'result': "未找到该问卷",
+                'result': "success",
+                'content': text,
             })
-        text = list(text.values())[0].get('text')
-        return Response({
-            'result': "success",
-            'text': text,
-        })
+        else:
+            return Response({
+                'result': "你是老师吗？",
+            })

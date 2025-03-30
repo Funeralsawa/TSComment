@@ -14,7 +14,7 @@ class Register(APIView):
         username = data['username']
         password = data['password']
         IdentifyPassword = data['IdentifyPassword']
-        select = data['select']
+        select = data.get('select')
         if not username or not password or not IdentifyPassword:
             return Response({
                 'result': "数据不许为空!"

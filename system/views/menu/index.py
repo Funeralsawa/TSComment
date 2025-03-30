@@ -24,8 +24,9 @@ class send_question(APIView):
                 'result': "数据不允许为空",
             })
         client = OpenAI(api_key="sk-e7ce7c118b50415db425e1ceea5704fe", base_url="https://api.deepseek.com")
-        questionnaire = "给我生成一份关于“{content}”的小调查问卷，以html格式输出，使用中文" \
-                        "所有的高度和宽度采用相对于父元素的高度和宽度".format(content=data['question'])
+        questionnaire = "给我生成一份关于“{content}”的调查问卷的json配置，用于微信小程序前端动态展示，使用中文" \
+                "包括3个单选题，2个多选题以及一个简答题，支持wx:for绑定数据, 两个主要的字段是'title'与'components'".format(content=data['question'])
+
         file = open("TSComment/medias/log.txt", mode='a', encoding='utf-8')
         file.write(questionnaire + '\n')
         file.close()
@@ -40,7 +41,7 @@ class send_question(APIView):
         questionnaire = response.choices[0].message.content
         l, r = 0, len(questionnaire) - 1
         for i in range(len(questionnaire)):
-            if not l and questionnaire[i:i+4] == "html":
+            if not l and questionnaire[i:i+4] == "json":
                 l = i + 4
             elif l and questionnaire[i:i+3] == "```":
                 r = i
@@ -61,11 +62,15 @@ class save_text(APIView):
     permission_classes = [IsAuthenticated]
 
     def post(self, request):
-        user, data = request.user, request.POST
+        user, data = request.user, request.data
         flag = False
         if Teacher.objects.filter(user=user):
             teacher = Teacher.objects.filter(user=user)[0]
-            Questionnaire.objects.create(text=data['text'], owner=teacher, name=data['questionnaireName'])
+            if Questionnaire.objects.filter(owner=teacher, name=data.get('questionnaireName')):
+                return JsonResponse({
+                    'result': "当前问卷已存在！",
+                })
+            Questionnaire.objects.create(content=data['content'], owner=teacher, name=data['questionnaireName'])
             flag = True
         if flag:
             print("save success")
@@ -74,5 +79,5 @@ class save_text(APIView):
             })
         else:
             return JsonResponse({
-                'result': "fail",
+                'result': "没有当前老师存在",
             })
