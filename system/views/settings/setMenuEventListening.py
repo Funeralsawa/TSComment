@@ -9,11 +9,18 @@ class SetMenuEventListening(APIView):
     permission_classes = [IsAuthenticated]
     def get(self, request):
         data = request.GET
-        name = data['name']
+        name = data.get('name')
         user = request.user
         if Teacher.objects.filter(user=user):
             teacher = Teacher.objects.filter(user=user)[0]
-            text = Questionnaire.objects.filter(owner=teacher, name=name)
+            cname = data.get('className', ' ')
+            cls = teacher.classes.filter(ClassName=cname)
+            if not cls:
+                return Response({
+                    'result': "你想要的是哪个班级下的问卷呢？",
+                })
+            cls = cls[0]
+            text = Questionnaire.objects.filter(owner=teacher, name=name, cls=cls)
             if not text:
                 return Response({
                     'result': "未找到该问卷",

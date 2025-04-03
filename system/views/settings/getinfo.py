@@ -13,15 +13,19 @@ class getinfo(APIView):
         user = request.user
         if Teacher.objects.filter(user=user):
             teacher = Teacher.objects.filter(user=user)[0]
-            questionnaire = Questionnaire.objects.filter(owner=teacher)
+            cls = teacher.classes.all()
             return Response({
                 'result': "success",
                 'is_teacher': 1,
-                'questionnaire': list(questionnaire.values('name')),
+                'name': str(teacher.name),
+                'classes': list(cls.values('ClassName')),
             })
-        else:
+        elif Student.objects.filter(user=user):
+            student = Student.objects.get(user=user)
             return Response({
                 'result': "success",
+                'name': str(student.name),
+                'class': str(student.cls.ClassName),
                 'is_teacher': 0,
             })
 

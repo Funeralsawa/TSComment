@@ -11,9 +11,10 @@ class Register(APIView):
 
     def post(self, request):
         data = request.data
-        username = data['username']
-        password = data['password']
-        IdentifyPassword = data['IdentifyPassword']
+        name = data.get('name')
+        username = data.get('username')
+        password = data.get('password')
+        IdentifyPassword = data.get('IdentifyPassword')
         select = data.get('select')
         if not username or not password or not IdentifyPassword:
             return Response({
@@ -29,9 +30,9 @@ class Register(APIView):
             })
         user = User.objects.create_user(username=username, password=password)
         if select == 'Student':
-            Student.objects.create(user=user, photo='https://img.tukuppt.com/ad_preview/01/01/33/3DjnJcLeIP.jpg!/fw/260')
+            Student.objects.create(user=user, photo='https://img.tukuppt.com/ad_preview/01/01/33/3DjnJcLeIP.jpg!/fw/260', name=name)
         else:
-            Teacher.objects.create(user=user, photo='https://tse4-mm.cn.bing.net/th/id/OIP-C.5NSM0Kb1mSR3J6K31nHiIgAAAA?rs=1&pid=ImgDetMain')
+            Teacher.objects.create(user=user, photo='https://tse4-mm.cn.bing.net/th/id/OIP-C.5NSM0Kb1mSR3J6K31nHiIgAAAA?rs=1&pid=ImgDetMain', name=name)
         return Response({
             'result': 'success',
         })

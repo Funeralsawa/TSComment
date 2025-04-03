@@ -1,5 +1,4 @@
 from django.urls import path
-from system.views.settings.login import signin
 from system.views.settings.getinfo import getinfo
 from system.views.settings.register import Register
 from system.views.settings.get_csrf_token import get_csrf_token
@@ -10,7 +9,6 @@ from rest_framework_simplejwt.views import (
 )
 
 urlpatterns = [
-    path('login/', signin, name='signin'),
     path('getinfo/', getinfo.as_view(), name="getinfo"),
     path('register/', Register.as_view(), name="Register"),
     path('setMenuEventListening/', SetMenuEventListening.as_view(), name="SetMenuEventListening"),
