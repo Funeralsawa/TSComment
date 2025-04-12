@@ -9,6 +9,6 @@ class Class(models.Model):
         return self.ClassName
 
     class Meta:
-        managed=False
+        managed=True
         verbose_name = 'class'
         verbose_name_plural = 'classes'

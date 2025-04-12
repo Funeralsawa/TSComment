@@ -8,7 +8,7 @@ from django.http import JsonResponse
 class SetMenuEventListening(APIView):
     permission_classes = [IsAuthenticated]
     def get(self, request):
-        data = request.GET
+        data = request.data
         name = data.get('name')
         user = request.user
         if Teacher.objects.filter(user=user):
@@ -17,7 +17,7 @@ class SetMenuEventListening(APIView):
             cls = teacher.classes.filter(ClassName=cname)
             if not cls:
                 return Response({
-                    'result': "你想要的是哪个班级下的问卷呢？",
+                    'result': '你要找的是哪个班级的问卷呢？',
                 })
             cls = cls[0]
             text = Questionnaire.objects.filter(owner=teacher, name=name, cls=cls)

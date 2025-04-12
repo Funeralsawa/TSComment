@@ -25,7 +25,8 @@ class send_question(APIView):
             return Response({
                 'result': "数据不允许为空",
             })
-        client = OpenAI(api_key=settings.API_KEY, BAse_url="https://api.deepseek.com")
+        print(settings.API_KEY)
+        client = OpenAI(api_key=settings.API_KEY, base_url="https://api.deepseek.com")
         questionnaire = "给我生成一份关于“{content}”的调查问卷的json配置，用于微信小程序前端动态展示，使用中文" \
                 "包括3个单选题，2个多选题以及一个简答题，支持wx:for绑定数据, 两个主要的字段是'title'与'components'".format(content=data['question'])
 
@@ -127,8 +128,9 @@ class tGetQuestionnaire(APIView):
             return Response({
                 'result': "你不是老师为什么要访问这个API",
             })
+        data = request.data
         teacher = Teacher.objects.get(user=user)
-        cname = request.get('className')
+        cname = data.get('className')
         cls = teacher.classes.filter(ClassName=cname)
         if not cls:
             return Response({

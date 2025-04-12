@@ -22,10 +22,12 @@ class getinfo(APIView):
             })
         elif Student.objects.filter(user=user):
             student = Student.objects.get(user=user)
+            if student.cls: cls = student.cls.ClassName
+            else: cls = None
             return Response({
                 'result': "success",
                 'name': str(student.name),
-                'class': str(student.cls.ClassName),
+                'class': str(cls),
                 'is_teacher': 0,
             })
 
