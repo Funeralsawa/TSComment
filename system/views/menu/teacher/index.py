@@ -11,6 +11,37 @@ from django.conf import settings
 import math
 import random
 
+class del_questionnaire(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def delete(self, request):
+        user = request.user
+        if not Teacher.objects.filter(user=user):
+            return Response({
+                'result': "只有老师可以删除问卷噢！",
+            })
+        data = request.GET
+        owner = Teacher.objects.get(user=user)
+        name = data.get('name')
+        cls = data.get('class')
+
+        if not cls or not name:
+            return Response({
+                'result': "数据不允许为空",
+            })
+
+        try:
+            cls = Class.objects.get(ClassName=cls, teacher=owner)
+            q = Questionnaire.objects.get(owner=owner, name=name, cls=cls)
+            q.delete()
+            return Response({
+                'result': "success"
+            })
+        except:
+            return Response({
+                'result': "没有该问卷噢！"
+            })
+
 class send_question(APIView):
     permission_classes = [IsAuthenticated]
 
@@ -20,7 +51,7 @@ class send_question(APIView):
             return Response({
                 'result': "只有老师才能生成问卷噢！",
             })
-        data = request.data
+        data = request.GET
         if not data.get('question'):
             return Response({
                 'result': "数据不允许为空",

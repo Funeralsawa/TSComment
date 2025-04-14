@@ -31,8 +31,9 @@ DEBUG = True
 
 ALLOWED_HOSTS = ["47.115.43.91", "tscomment.xyz", "app7431.acapp.acwing.com.cn"]
 
-
 # Application definition
+
+APPEND_SLASH = True
 
 INSTALLED_APPS = [
     'rest_framework',

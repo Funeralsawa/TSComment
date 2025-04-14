@@ -6,4 +6,5 @@ urlpatterns = [
     path("save_text/", teacher_index.save_text.as_view(), name="save_text"),
     path("add_class/", teacher_index.add_class.as_view(), name="add_class"),
     path("tGetQuestionnaire/", teacher_index.tGetQuestionnaire.as_view(), name="tGetQuestionnaire"),
+    path("del_questionnaire/", teacher_index.del_questionnaire.as_view(), name="del_questionnaire"),
 ]

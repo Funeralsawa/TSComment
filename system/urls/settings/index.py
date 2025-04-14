@@ -1,5 +1,5 @@
 from django.urls import path
-from system.views.settings.getinfo import getinfo
+from system.views.settings.getinfo import getinfo, GetClassInfo
 from system.views.settings.register import Register
 from system.views.settings.get_csrf_token import get_csrf_token
 from system.views.settings.setMenuEventListening import SetMenuEventListening
@@ -10,6 +10,7 @@ from rest_framework_simplejwt.views import (
 
 urlpatterns = [
     path('getinfo/', getinfo.as_view(), name="getinfo"),
+    path('getinfo_classes/', GetClassInfo.as_view(), name='getinfo_classes'),
     path('register/', Register.as_view(), name="Register"),
     path('setMenuEventListening/', SetMenuEventListening.as_view(), name="SetMenuEventListening"),
     path('api/token/', TokenObtainPairView.as_view(), name='settings_api_token'),

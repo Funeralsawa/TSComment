@@ -13,11 +13,29 @@ class getinfo(APIView):
         user = request.user
         if Teacher.objects.filter(user=user):
             teacher = Teacher.objects.filter(user=user)[0]
-            cls = teacher.classes.all()
             return Response({
                 'result': "success",
                 'is_teacher': 1,
-                'name': str(teacher.name),
+                'name': teacher.name,
+            })
+        elif Student.objects.filter(user=user):
+            student = Student.objects.get(user=user)
+            return Response({
+                'result': "success",
+                'name': student.name,
+                'is_teacher': 0,
+            })
+
+class GetClassInfo(APIView):
+    permission_classes = ([IsAuthenticated])
+
+    def get(self, request):
+        user = request.user
+        if Teacher.objects.filter(user=user):
+            teacher = Teacher.objects.filter(user=user)[0]
+            cls = teacher.classes.all()
+            return Response({
+                'result': "success",
                 'classes': list(cls.values('ClassName')),
             })
         elif Student.objects.filter(user=user):
@@ -26,8 +44,8 @@ class getinfo(APIView):
             else: cls = None
             return Response({
                 'result': "success",
-                'name': str(student.name),
-                'class': str(cls),
-                'is_teacher': 0,
+                'classes': [
+                    {'ClassName': cls}
+                ]
             })
 
