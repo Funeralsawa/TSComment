@@ -159,7 +159,7 @@ class tGetQuestionnaire(APIView):
             return Response({
                 'result': "你不是老师为什么要访问这个API",
             })
-        data = request.data
+        data = request.GET
         teacher = Teacher.objects.get(user=user)
         cname = data.get('className')
         cls = teacher.classes.filter(ClassName=cname)
@@ -173,3 +173,34 @@ class tGetQuestionnaire(APIView):
             'result': "success",
             'questionnaire': list(questionnaire.values('name'))
         })
+
+class submit_questionnaire(APIView):
+    permission_classes = ([IsAuthenticated])
+
+    def put(self, request):
+        user = request.user
+        if not Teacher.objects.filter(user=user):
+            return Response({
+                'result': "只有老师才能修改问卷哦！"
+            })
+        teacher = Teacher.objects.get(user=user)
+        try:
+            data = request.data
+            cls = data.get('class_name')
+            name = data.get('questionnaire_name')
+            if not teacher.classes.filter(ClassName=cls):
+                return Response({
+                    'result': "你没有该班级"
+                })
+            cls = teacher.classes.filter(ClassName=cls)[0]
+            q = Questionnaire.objects.get(cls=cls, owner=teacher, name=name)
+            q.has_submit = True
+            q.save()
+            return Response({
+                'result': "success"
+            })
+        except:
+            return Response({
+                'result': "未找到该问卷"
+            })
+
